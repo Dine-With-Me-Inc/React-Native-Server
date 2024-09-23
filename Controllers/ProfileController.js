@@ -6,7 +6,7 @@ const ProfileController = {
       last_name, full_name, profile_picture, public, notifications, verified, launch,
       followers, following, recipes, lists } = req.body;
     const query = `
-      INSERT INTO Profiles
+      INSERT INTO profiles
         (userId, username, email, phone, bio, location, first_name, 
         last_name, full_name, profile_picture, public, notifications, verified, launch,
         followers, following, recipes, lists, created_at)
@@ -25,7 +25,7 @@ const ProfileController = {
   grabProfile: async (req, res) => {
     const { id } = req.params
     const query = `
-      SELECT * FROM Profiles
+      SELECT * FROM profiles
       WHERE user_id = $1`;
     try {
       const result = await pool.query(query, [id]);
@@ -38,7 +38,7 @@ const ProfileController = {
   grabProfileByUsername: async (req, res) => {
     const { id } = req.params
     const query = `
-      SELECT * FROM Profiles
+      SELECT * FROM profiles
       WHERE username = $1`;
     try {
       const result = await pool.query(query, [id]);
@@ -51,7 +51,7 @@ const ProfileController = {
   searchProfiles: async (req, res) => {
     const { term } = req.params;
     const query = `
-      SELECT * FROM Profiles
+      SELECT * FROM profiles
       WHERE username ILIKE $1 OR full_name ILIKE $1`;
     try {
       const result = await pool.query(query, [`%${term}%`]);
@@ -63,7 +63,7 @@ const ProfileController = {
   },
   grabAllProfile: async (req, res) => {
     const query = `
-      SELECT * FROM Profiles`;
+      SELECT * FROM profiles`;
     try {
       const result = await pool.query(query);
       res.status(201).json(result.rows);
@@ -74,7 +74,7 @@ const ProfileController = {
   },
   grabAllProfileCount: async (req, res) => {
     const query = `
-      SELECT COUNT(*) AS totalProfiles FROM Profiles`;
+      SELECT COUNT(*) AS totalProfiles FROM profiles`;
     try {
       const result = await pool.query(query);
       const totalProfiles = result.rows[0].totalprofiles; // Extract the totalProfiles count
@@ -90,7 +90,7 @@ const ProfileController = {
     const { username, email, phone, location, first_name, 
       last_name, full_name, bio, nickname, profile_picture, public, notifications } = req.body;
     const query = `
-      UPDATE Profiles
+      UPDATE profiles
       SET username = $1, email = $2, phone = $3, location = $4, first_name = $5, 
           last_name = $6, full_name = $7, bio = $8, nickname = $9, profile_picture = $10, 
           public = $11, notifications = $12
@@ -111,7 +111,7 @@ const ProfileController = {
     const { token } = req.body;
     console.log(token)
     const query = `
-      UPDATE Profiles
+      UPDATE profiles
       SET fcmtoken = $1
       WHERE user_id = $2
       RETURNING *;
@@ -127,7 +127,7 @@ const ProfileController = {
   deleteUserProfile: async (req, res) => {
     const { id } = req.params
     const query = `
-      DELETE * FROM Profiles WHERE user_id = $1`;
+      DELETE * FROM profiles WHERE user_id = $1`;
     try {
       const result = await pool.query(query, [id]);
       res.status(201).json(result.rows);
