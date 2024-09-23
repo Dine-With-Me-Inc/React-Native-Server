@@ -2,23 +2,30 @@ const pool = require('../bin/utils/AwsConnect'); // Adjust the path as necessary
 
 const ProfileController = {
   createProfile: async (req, res) => {
-    const { userId, username, email, phone, bio, location, first_name, 
+    const {
+      userId, username, email, phone, bio, location, first_name,
       last_name, full_name, profile_picture, public, notifications, verified, launch,
-      followers, following, recipes, lists } = req.body;
+      followers, following, recipes, lists
+    } = req.body;
+
     const query = `
       INSERT INTO profile
-        (userId, username, email, phone, bio, location, first_name, 
+        (user_id, username, email, phone, bio, location, first_name, 
         last_name, full_name, profile_picture, public, notifications, verified, launch,
         followers, following, recipes, lists, created_at)
-        VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, 0, 0, 0, 0, NOW())
-        RETURNING *;`;
+      VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, 0, 0, 0, 0, NOW())
+      RETURNING *;
+    `;
+
     try {
-      const result = await pool.query(query, [userId, username, email, phone, bio, location, first_name, 
+      const result = await pool.query(query, [
+        userId, username, email, phone, bio, location, first_name,
         last_name, full_name, profile_picture, public, notifications, verified, launch,
-        followers, following, recipes, lists]);
+        followers, following, recipes, lists
+      ]);
       res.status(201).json(result.rows[0]);
     } catch (err) {
-      console.error(err);
+      console.error('Error creating profile:', err.message);
       res.status(500).send(err.message);
     }
   },
