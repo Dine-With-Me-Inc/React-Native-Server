@@ -1,0 +1,25 @@
+{
+  "name": "dinewithmeserver",
+  "version": "1.0.0",
+  "description": "This is the react native server that will connect react native application to aws services.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon ./bin/index.js"
+  },
+  "author": "Omar jandali",
+  "license": "ISC",
+  "dependencies": {
+    "aws-sdk": "^2.1691.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.21.0",
+    "helmet": "^7.1.0",
+    "install": "^0.13.0",
+    "morgan": "^1.10.0",
+    "mysql": "^2.18.1",
+    "nodemailer": "^6.9.15",
+    "nodemon": "^3.1.7",
+    "pg": "^8.13.0"
+  }
+}
