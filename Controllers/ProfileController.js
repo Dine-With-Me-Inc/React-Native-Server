@@ -45,7 +45,7 @@ const ProfileController = {
       if (result.rows.length > 0) {
         res.status(200).json(result.rows); // Send back the profile(s)
       } else {
-        res.status(404).json({ message: 'No profile found with this username' });
+        res.status(200).json({ data: [] });
       }
     } catch (err) {
       console.error('Error in grabProfileByUsername:', err.message);
