@@ -13,6 +13,6 @@ app.use(helmet());
 app.use(morgan('common')); 
 app.use(express.json()); 
 
-app.use('/api/v1/profiles/', ProfileRouter);
+app.use('/api/v1/profile/', ProfileRouter);
 
 module.exports = app;
