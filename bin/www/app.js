@@ -14,5 +14,8 @@ app.use(morgan('common'));
 app.use(express.json()); 
 
 app.use('/api/v1/profile/', ProfileRouter);
+app.get('/', (req, res) => {
+  res.send('API is up and running!');
+});
 
 module.exports = app;

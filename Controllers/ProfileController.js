@@ -36,16 +36,20 @@ const ProfileController = {
     }
   },
   grabProfileByUsername: async (req, res) => {
-    const { id } = req.params
+    const { id } = req.params; // Here, 'id' should be the username
     const query = `
       SELECT * FROM profiles
       WHERE username = $1`;
     try {
       const result = await pool.query(query, [id]);
-      res.status(201).json(result.rows);
+      if (result.rows.length > 0) {
+        res.status(200).json(result.rows); // Send back the profile(s)
+      } else {
+        res.status(404).json({ message: 'No profile found with this username' });
+      }
     } catch (err) {
-      console.error(err);
-      res.status(500).send(err.message);
+      console.error('Error in grabProfileByUsername:', err.message);
+      res.status(500).send('Internal Server Error');
     }
   },
   searchProfiles: async (req, res) => {
