@@ -42,11 +42,7 @@ const ProfileController = {
       WHERE username = $1`;
     try {
       const result = await pool.query(query, [id]);
-      if (result.rows.length > 0) {
-        res.status(200).json(result.rows); // Send back the profile(s)
-      } else {
-        res.status(200).json({ data: [] });
-      }
+      res.status(200).json(result.rows);
     } catch (err) {
       console.error('Error in grabProfileByUsername:', err.message);
       res.status(500).send('Internal Server Error');
