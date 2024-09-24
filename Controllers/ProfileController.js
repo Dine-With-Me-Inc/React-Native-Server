@@ -7,7 +7,7 @@ const ProfileController = {
     const query = `
       INSERT INTO profile
       (user_id, username, email, phone, bio, profile_picture, verified, launch, followers, 
-      follwoing, recipes, lists, created_at, first_name, last_name, full_name, public, notifications, location)
+      following, recipes, lists, created_at, first_name, last_name, full_name, public, notifications, location)
       VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, NOW(), $14, $15, $16, $17)
       RETURNING *;`;
     try {
