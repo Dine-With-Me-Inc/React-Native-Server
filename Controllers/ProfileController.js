@@ -3,21 +3,25 @@ const pool = require("../bin/utils/AwsConnect");
 const ProfileController = {
   createProfile: async (req, res) => {
     const { user_id, username, email, phone, bio, profile_picture, verified, launch, followers, 
-      follwoing, recipes, lists, first_name, last_name, full_name, public, notifications, location} = req.body;
+      following, recipes, lists, first_name, last_name, full_name, public, notifications, location} = req.body;
+
     const query = `
       INSERT INTO profile
       (user_id, username, email, phone, bio, profile_picture, verified, launch, followers, 
       following, recipes, lists, created_at, first_name, last_name, full_name, public, notifications, location)
-      VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, NOW(), $14, $15, $16, $17, $18)
+      VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, NOW(), $13, $14, $15, $16, $17, $18)
       RETURNING *;`;
+
     try {
       const result = await pool.query(query, [user_id, username, email, phone, bio, profile_picture, verified, launch, followers, 
-        follwoing, recipes, lists, first_name, last_name, full_name, public, notifications, location]);
+        following, recipes, lists, first_name, last_name, full_name, public, notifications, location]);
       res.status(201).json(result.rows[0]);
     } catch (err) {
       console.error(err);
       res.status(500).send(err.message);
     }
+  },
+
   },
   grabProfile: async (req, res) => {
     const { id } = req.params
