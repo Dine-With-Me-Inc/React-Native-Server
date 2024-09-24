@@ -14,11 +14,11 @@ ProfileRouter.route('/:id')
   .put(ProfileController.updateUserProfile)
   .delete(ProfileController.deleteUserProfile)
 
-ProfileRouter.route('/search/:term')
-  .get(ProfileController.searchProfiles)
-
 ProfileRouter.route('/username/:id')
   .get(ProfileController.grabProfileByUsername)
+
+ProfileRouter.route('/search/:term')
+  .get(ProfileController.searchProfiles)
 
 ProfileRouter.route('/fcm-token/:id')
   .put(ProfileController.updateUserFCMToken)

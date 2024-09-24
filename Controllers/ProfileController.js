@@ -1,32 +1,23 @@
-const pool = require('../bin/utils/AwsConnect'); // Adjust the path as necessary
+const pool = require('../bin/utils/AwsDbConnect'); // Adjust the path as necessary
+const admin = require('../bin/utils/firebaseAdmin');
 
 const ProfileController = {
   createProfile: async (req, res) => {
-    const {
-      userId, username, email, phone, bio, location, first_name,
-      last_name, full_name, profile_picture, public, notifications, verified, launch,
-      followers, following, recipes, lists
-    } = req.body;
-
+    const { user_id, username, email, phone, bio, profile_picture, verified, launch, followers, 
+      follwoing, recipes, lists, created_at, first_name, last_name, full_name, public, notifications, location} = req.body;
     const query = `
       INSERT INTO profile
-        (user_id, username, email, phone, bio, location, first_name, 
-        last_name, full_name, profile_picture, public, notifications, verified, launch,
-        followers, following, recipes, lists, created_at)
-      VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, 0, 0, 0, 0, NOW())
-      RETURNING *;
-    `;
-
+      (user_id, username, email, phone, bio, profile_picture, verified, launch, followers, 
+      follwoing, recipes, lists, created_at, first_name, last_name, full_name, public, notifications, location)
+      VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, NOW(), $14, $15, $16, $17)
+      RETURNING *;`;
     try {
-      const result = await pool.query(query, [
-        userId, username, email, phone, bio, location, first_name,
-        last_name, full_name, profile_picture, public, notifications, verified, launch,
-        followers, following, recipes, lists
-      ]);
+      const result = await pool.query(query, [user_id, username, email, phone, bio, profile_picture, verified, launch, followers, 
+        follwoing, recipes, lists, created_at, first_name, last_name, full_name, public, notifications, location]);
       res.status(201).json(result.rows[0]);
     } catch (err) {
-      console.error('Error creating profile:', err);
-      res.status(500).send(err);
+      console.error(err);
+      res.status(500).send(err.message);
     }
   },
   grabProfile: async (req, res) => {
@@ -37,6 +28,19 @@ const ProfileController = {
     try {
       const result = await pool.query(query, [id]);
       res.status(201).json(result.rows);
+    } catch (err) {
+      console.error(err);
+      res.status(500).send(err.message);
+    }
+  },
+  searchProfiles: async (req, res) => {
+    const { term } = req.params;
+    const query = `
+      SELECT * FROM profile
+      WHERE username ILIKE $1 OR full_name ILIKE $1`;
+    try {
+      const result = await pool.query(query, [`%${term}%`]);
+      res.status(200).json(result.rows);
     } catch (err) {
       console.error(err);
       res.status(500).send(err.message);
@@ -53,19 +57,6 @@ const ProfileController = {
     } catch (err) {
       console.error('Error in grabProfileByUsername:', err.message);
       res.status(500).send('Internal Server Error');
-    }
-  },
-  searchProfiles: async (req, res) => {
-    const { term } = req.params;
-    const query = `
-      SELECT * FROM profile
-      WHERE username ILIKE $1 OR full_name ILIKE $1`;
-    try {
-      const result = await pool.query(query, [`%${term}%`]);
-      res.status(200).json(result.rows);
-    } catch (err) {
-      console.error(err);
-      res.status(500).send(err.message);
     }
   },
   grabAllProfile: async (req, res) => {

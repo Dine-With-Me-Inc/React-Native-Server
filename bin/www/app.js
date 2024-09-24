@@ -3,8 +3,9 @@ const cors = require('cors');
 const helmet = require('helmet');
 const morgan = require('morgan');
 const AWS = require('aws-sdk');
-const ProfileRouter = require('../../Routers/ProfileRouter');
 require('dotenv').config();
+
+const ProfileRouter = require('../../Routers/ProfileRouter');
 
 const app = express();
 
@@ -13,9 +14,6 @@ app.use(helmet());
 app.use(morgan('common')); 
 app.use(express.json()); 
 
-app.use('/api/v1/profile/', ProfileRouter);
-app.get('/', (req, res) => {
-  res.send('API is up and running!');
-});
+app.use('/api/v1/profiles/', ProfileRouter);
 
 module.exports = app;
