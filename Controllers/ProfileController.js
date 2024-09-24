@@ -21,8 +21,6 @@ const ProfileController = {
       res.status(500).send(err.message);
     }
   },
-
-  },
   grabProfile: async (req, res) => {
     const { id } = req.params
     const query = `
