@@ -25,8 +25,8 @@ const ProfileController = {
       ]);
       res.status(201).json(result.rows[0]);
     } catch (err) {
-      console.error('Error creating profile:', err.message);
-      res.status(500).send(err.message);
+      console.error('Error creating profile:', err);
+      res.status(500).send(err);
     }
   },
   grabProfile: async (req, res) => {
