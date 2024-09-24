@@ -3,7 +3,7 @@ const pool = require("../bin/utils/AwsConnect");
 const ProfileController = {
   createProfile: async (req, res) => {
     const { user_id, username, email, phone, bio, profile_picture, verified, launch, followers, 
-      follwoing, recipes, lists, created_at, first_name, last_name, full_name, public, notifications, location} = req.body;
+      follwoing, recipes, lists, first_name, last_name, full_name, public, notifications, location} = req.body;
     const query = `
       INSERT INTO profile
       (user_id, username, email, phone, bio, profile_picture, verified, launch, followers, 
@@ -12,7 +12,7 @@ const ProfileController = {
       RETURNING *;`;
     try {
       const result = await pool.query(query, [user_id, username, email, phone, bio, profile_picture, verified, launch, followers, 
-        follwoing, recipes, lists, created_at, first_name, last_name, full_name, public, notifications, location]);
+        follwoing, recipes, lists, first_name, last_name, full_name, public, notifications, location]);
       res.status(201).json(result.rows[0]);
     } catch (err) {
       console.error(err);
